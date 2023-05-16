@@ -20,6 +20,7 @@ import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -100,6 +101,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         UserVO loginUserVO = (UserVO) session.getAttribute(USER_LOGIN_STATUS_KEY);
         ThrowUtils.throwIf(Objects.isNull(loginUserVO), StatusCode.NOT_LOGIN_ERROR, "当前状态未登录");
         return loginUserVO;
+    }
+
+    @Override
+    public List<User> queryUser(String searchText) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotBlank(searchText)) {
+            queryWrapper.like(User::getUserName, searchText)
+                    .or()
+                    .like(User::getUserAccount, searchText);
+        }
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public Boolean deleteUserById(Long userId) {
+        ThrowUtils.throwIf(userId <= 0, StatusCode.PARAMS_ERROR, "用户id不合法");
+        return this.removeById(userId);
+    }
+
+    @Override
+    public Boolean userLogout(HttpServletRequest request) {
+        UserVO loginUser = this.getLoginUser(request);
+        ThrowUtils.throwIf(Objects.isNull(loginUser), StatusCode.NOT_LOGIN_ERROR, "当前尚未登录");
+        HttpSession session = request.getSession();
+        session.removeAttribute(USER_LOGIN_STATUS_KEY);
+        return true;
     }
 }
 

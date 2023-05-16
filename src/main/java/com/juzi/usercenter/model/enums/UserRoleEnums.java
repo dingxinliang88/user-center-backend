@@ -1,5 +1,7 @@
 package com.juzi.usercenter.model.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 /**
@@ -8,9 +10,20 @@ import java.util.Objects;
  * @author codejuzi
  */
 public enum UserRoleEnums {
-    USER("普通用户", 0),
-    ADMIN("管理员", 1),
-    BANNED("被封号", 2);
+    /**
+     * 普通用户
+     */
+    USER("user", 0),
+
+    /**
+     * 管理员
+     */
+    ADMIN("admin", 1),
+
+    /**
+     * 被封号的
+     */
+    BANNED("banned", 2);
 
     private final String description;
 
@@ -41,6 +54,24 @@ public enum UserRoleEnums {
         }
         for (UserRoleEnums userRoleEnums : UserRoleEnums.values()) {
             if (userRoleEnums.getUserRole().equals(userRole)) {
+                return userRoleEnums;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据描述获取枚举值
+     *
+     * @param description 角色描述
+     * @return 枚举值
+     */
+    public static UserRoleEnums getEnumByDesc(String description) {
+        if (StringUtils.isBlank(description)) {
+            return null;
+        }
+        for (UserRoleEnums userRoleEnums : UserRoleEnums.values()) {
+            if (userRoleEnums.getDescription().equals(description)) {
                 return userRoleEnums;
             }
         }

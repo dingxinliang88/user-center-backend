@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.usercenter.model.vo.user.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author codejuzi
@@ -39,4 +40,30 @@ public interface UserService extends IService<User> {
      * @return UserVO，登录态中的用户信息
      */
     UserVO getLoginUser(HttpServletRequest request);
+
+    /**
+     * 根据搜索关键词来模糊匹配userName、 userAccount查找用户。
+     * 不传默认搜索所有用户，仅管理员可用
+     *
+     * @param searchText 搜索关键词
+     * @return User全数据列表
+     */
+    List<User> queryUser(String searchText);
+
+    /**
+     * 根据userid 删除用户，仅管理员
+     *
+     * @param userId user id
+     * @return true - 删除成功
+     */
+    Boolean deleteUserById(Long userId);
+
+    /**
+     * 用户登出
+     *
+     * @param request http request
+     * @return true - 登出成功
+     */
+    Boolean userLogout(HttpServletRequest request);
+
 }
