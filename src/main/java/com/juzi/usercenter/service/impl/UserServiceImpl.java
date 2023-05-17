@@ -75,12 +75,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String userPassword = userLoginRequest.getUserPassword();
         ValidCheckUtils.checkLoginParams(userAccount, userPassword);
 
-        UserVO loginUser = this.getLoginUser(request);
+        UserVO loginUser = this.getLoginUserPermitNull(request);
         if (loginUser != null) {
             return loginUser;
         }
         synchronized (userAccount.intern()) {
-            loginUser = this.getLoginUser(request);
+            loginUser = this.getLoginUserPermitNull(request);
             if (loginUser != null) {
                 return loginUser;
             }
@@ -112,6 +112,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         UserVO loginUserVO = (UserVO) session.getAttribute(USER_LOGIN_STATUS_KEY);
         ThrowUtils.throwIf(Objects.isNull(loginUserVO), StatusCode.NOT_LOGIN_ERROR, "当前状态未登录");
         return loginUserVO;
+    }
+
+    @Override
+    public UserVO getLoginUserPermitNull(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return (UserVO) session.getAttribute(USER_LOGIN_STATUS_KEY);
     }
 
     @Override

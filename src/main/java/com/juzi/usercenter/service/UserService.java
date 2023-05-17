@@ -42,6 +42,14 @@ public interface UserService extends IService<User> {
     UserVO getLoginUser(HttpServletRequest request);
 
     /**
+     * 获取当前登录用户，允许为空
+     *
+     * @param request http request
+     * @return UserVO，登录态中的用户信息
+     */
+    UserVO getLoginUserPermitNull(HttpServletRequest request);
+
+    /**
      * 根据搜索关键词来模糊匹配userName、 userAccount查找用户。
      * 不传默认搜索所有用户，仅管理员可用
      *
