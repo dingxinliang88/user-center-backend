@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  microService:
+    image: user-center-backend:0.0.1
+    container_name: user-center
+    ports:
+      - "8080:8080"
+    volumes:
+      - /app/microService:/data
+    networks:
+      - codejuzi_net
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0.29
+    environment:
+      MYSQL_ROOT_PASSWORD: '12345678'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MYSQL_DATABASE: 'user_center'
+      MYSQL_USER: 'codejuzi'
+      MYSQL_PASSWORD: 'codejuzi123'
+    ports:
+      - "3306:3306"
+    volumes:
+      - /app/mysql/db:/var/lib/mysql
+      - /app/mysql/conf/my.cnf:/etc/my.cnf
+      - /app/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - codejuzi_net
+    command: --default-authentication-plugin=mysql_native_password #解决外部无法访问
+networks:
+  codejuzi_net:

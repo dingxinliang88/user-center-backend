@@ -31,8 +31,4 @@ public class BaseResponse<T> {
         this.data = data;
         this.message = message;
     }
-
-    public BaseResponse(StatusCode statusCode) {
-        this(statusCode.getCode(), null, statusCode.getMessage());
-    }
 }

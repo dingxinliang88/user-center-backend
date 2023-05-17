@@ -66,4 +66,10 @@ public interface UserService extends IService<User> {
      */
     Boolean userLogout(HttpServletRequest request);
 
+    /**
+     * 查询所有的用户对象（脱敏后的）
+     *
+     * @return user vo list
+     */
+    List<UserVO> listUserVO();
 }

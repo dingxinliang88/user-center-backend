@@ -51,6 +51,13 @@ public class UserController {
     }
 
     @AuthCheck(mustRole = "admin")
+    @GetMapping("/list")
+    public BaseResponse<List<UserVO>> listUserVO() {
+        List<UserVO> userVOList = userService.listUserVO();
+        return ResultUtils.success(userVOList);
+    }
+
+    @AuthCheck(mustRole = "admin")
     @DeleteMapping("/delete")
     public BaseResponse<Boolean> deleteUser(@RequestParam("userId") Long userId) {
         ThrowUtils.throwIf(userId <= 0, StatusCode.PARAMS_ERROR, "用户id不合法");
@@ -64,5 +71,9 @@ public class UserController {
         return ResultUtils.success(result, "登出成功");
     }
 
-
+    @GetMapping("/current")
+    public BaseResponse<UserVO> getLoginUserVO(HttpServletRequest request) {
+        UserVO loginUserVO = userService.getLoginUser(request);
+        return ResultUtils.success(loginUserVO);
+    }
 }

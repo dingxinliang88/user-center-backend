@@ -6,6 +6,8 @@ spring:
     active: dev
   session:
     timeout: 2592000
+  application:
+    name: user-center
 
 server:
   servlet:

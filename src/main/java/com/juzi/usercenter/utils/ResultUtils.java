@@ -47,17 +47,6 @@ public class ResultUtils {
     /**
      * 响应失败的结果
      *
-     * @param statusCode 响应的状态码
-     * @param message    响应失败信息
-     * @return 通用返回类
-     */
-    public static BaseResponse<?> error(StatusCode statusCode, String message) {
-        return new BaseResponse<>(statusCode.getCode(), null, message);
-    }
-
-    /**
-     * 响应失败的结果
-     *
      * @param code    状态码
      * @param message 响应失败的信息
      * @return 通用返回类
